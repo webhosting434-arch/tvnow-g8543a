@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV NOW - Stream Player</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --text-color: #f8fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 30px 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3rem;
+            font-weight: 900; /* Extra Bold */
+            letter-spacing: 4px;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            text-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+        }
+
+        /* Player Container */
+        .player-container {
+            width: 95%;
+            max-width: 1000px;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            border: 2px solid var(--card-bg);
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Channel List Area */
+        .channel-grid {
+            width: 95%;
+            max-width: 1000px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .channel-card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.05);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 50px;
+            user-select: none;
+        }
+
+        .channel-card:hover {
+            transform: translateY(-3px);
+            background: var(--accent-color);
+            color: var(--bg-color);
+            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.4);
+        }
+
+        .channel-card.active {
+            border-color: var(--accent-color);
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-color);
+        }
+
+        /* Footer & Ads Section */
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .ad-container {
+            margin-bottom: 20px;
+            width: 300px; /* Sesuai lebar iklan */
+            height: 250px; /* Sesuai tinggi iklan */
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .dev-name {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .dev-name b {
+            color: var(--accent-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            header h1 { font-size: 2.2rem; }
+            .channel-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>TV NOW</h1>
+</header>
+
+<div class="player-container">
+    <iframe id="main-player" 
+            src="https://sindikasi.inews.id/embed/video/YWdlbnQ9ZGVza3RvcCZ1cmw9aHR0cHMlM0ElMkYlMkZlbWJlZC5yY3RpcGx1cy5jb20lMkZsaXZlJTJGcmN0iSUyRmluZXdzaWQmaGVpZ2h0PTEwMCUyNSZ3aWR0aD0xMDAlMjU=" 
+            allowfullscreen 
+            allow="autoplay; encrypted-media">
+    </iframe>
+</div>
+
+<div class="channel-grid">
+    <div class="channel-card active" onclick="changeChannel(this, 'https://sindikasi.inews.id/embed/video/YWdlbnQ9ZGVza3RvcCZ1cmw9aHR0cHMlM0ElMkYlMkZlbWJlZC5yY3RpcGx1cy5jb20lMkZsaXZlJTJGcmN0iSUyRmluZXdzaWQmaGVpZ2h0PTEwMCUyNSZ3aWR0aD0xMDAlMjU=')">RCTI</div>
+    <div class="channel-card" onclick="changeChannel(this, 'https://sindikasi.inews.id/embed/video/YWdlbnQ9ZGVza3RvcCZ1cmw9aHR0cHMlM0ElMkYlMkZlbWJlZC5yY3RpcGx1cy5jb20lMkZsaXZlJTJGZ3R2JTJGaW5ld3NpZCZoZWlnaHQ9MTAwJTI1JndpZHRoPTEwMCUyNQ==')">GTV</div>
+    <div class="channel-card" onclick="changeChannel(this, 'https://sindikasi.inews.id/embed/video/YWdlbnQ9ZGVza3RvcCZ1cmw9aHR0cHMlM0ElMkYlMkZlbWJlZC5yY3RpcGx1cy5jb20lMkZsaXZlJTJGbW5jdHYlMkZpbmV3c2lkJmhlaWdodD0xMDAlMjUmd2lkdGg9MTAwJTI1')">MNCTV</div>
+    <div class="channel-card" onclick="changeChannel(this, 'https://20.detik.com/watch/livestreaming-transtv')">TRANS TV HD</div>
+    <div class="channel-card" onclick="changeChannel(this, 'https://20.detik.com/watch/livestreaming-trans7')">TRANS 7</div>
+    <div class="channel-card" onclick="changeChannel(this, 'https://sindikasi.inews.id/embed/video/YWdlbnQ9ZGVza3RvcCZ1cmw9aHR0cHMlM0ElMkYlMkZlbWJlZC5yY3RpcGx1cy5jb20lMkZsaXZlJTJGaW5ld3MlMkZpbmV3c2lkJmhlaWdodD0xMDAlMjUmd2lkdGg9MTAwJTI1')">iNEWS</div>
+    <div class="channel-card" onclick="changeChannel(this, 'https://www.cnnindonesia.com/tv/embed?ref=transmedia')">CNN INDONESIA</div>
+</div>
+
+<footer>
+    <div class="ad-container">
+        <script type="text/javascript">
+            atOptions = {
+                'key' : 'a6878515b32d84d321637431918f8804',
+                'format' : 'iframe',
+                'height' : 250,
+                'width' : 300,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="https://www.highperformanceformat.com/a6878515b32d84d321637431918f8804/invoke.js"></script>
+    </div>
+
+    <div class="dev-name">Developed by <b>im.pz</b></div>
+</footer>
+
+<script>
+    function changeChannel(element, url) {
+        const player = document.getElementById('main-player');
+        // Memberikan sedikit transisi halus saat ganti channel
+        player.style.opacity = "0.5";
+        
+        setTimeout(() => {
+            player.src = url;
+            player.style.opacity = "1";
+        }, 200);
+
+        const cards = document.querySelectorAll('.channel-card');
+        cards.forEach(card => card.classList.remove('active'));
+
+        element.classList.add('active');
+        
+        // Scroll ke atas otomatis
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+</script>
+
+</body>
+</html>
